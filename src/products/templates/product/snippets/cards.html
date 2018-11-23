@@ -1,0 +1,31 @@
+<div class="card border-info mb-4" style="max-width: 18rem;">
+
+<div class="card border-info" style="width: 18rem;">
+ 
+ <div class="card-header border-info">
+ 
+  {% if instance %}
+    <a href="{{instance.get_url}}"><img class="card-img-top" src="{{ instance.image.url }}" alt="{{instance.title}}"></a>
+  {% endif %}
+ 
+ </div>
+
+  <div class="card-body border-info">
+ 
+      <h5 class="card-title">{{ instance.title }}</h5>
+
+      <p class="card-text">{{ instance.desc | truncatewords:4 | upper}}</p>
+ 
+     {# <a href="{% url "detail" slug=instance.slug %}" class="btn btn-warning">URL_SHORTCUT</a> #}
+
+   </div>
+
+   <div class="card-footer border-info">
+
+   	      <a href="{{instance.get_url}}" class="btn btn-primary">View</a>
+          {% include "product/snippets/update-cart.html" with product=instance cart=cart product_id=instance.id %}
+   </div>
+
+</div>
+</div>
+

@@ -1,0 +1,7 @@
+{% for obj in object_list %}
+	 <b>{{ obj.title }}</b><br>
+	 <b>{{ obj.desc }}</b><br>
+	 <b>{{ obj.price }}</b><br>
+	 <b>{{ obj.featured }}</b><br>
+	 <img src="{{ obj.image.url}}" width="300px" height="300px"></img><br>
+{% endfor %}

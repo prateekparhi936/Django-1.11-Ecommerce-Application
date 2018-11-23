@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+{% if not billing_profile %}
+	
+	<p>Login</p>
+	
+	{% include "accounts/snippets/form.html" with form=login_form next_url=build_absolute_uri %}
+
+	<p>Continue as Guest</p>
+	
+	{% url "guestlogin" as guest_url %}
+	{% include "accounts/snippets/form.html" with form=guest_form next_url=build_absolute_uri action_url=guest_url %}
+
+{% else %}
+	
+	{% if not order_object.shipping_address %}
+		
+		<div class="row">
+			<div class="col">
+				<h2>Shipping Address</h2>
+				{% url "checkout_address" as checkout_address %}
+				{% include 'addresses/form.html' with form=address_form next_url=build_absolute_uri action_url=checkout_address address_type="shipping" %}
+			</div>
+		</div>
+
+	{% elif not order_object.billing_address %}
+
+		<div class="row">
+			<div class="col">
+				<h2>Billing Address</h2>
+				{% url "checkout_address" as checkout_address %}
+				{% include 'addresses/form.html' with form=address_form next_url=build_absolute_uri action_url=checkout_address address_type="billing" %}
+			</div>
+		</div>
+
+	{% else %}
+		
+		<h1>Finalize CHECKOUT</h1>
+		<p>Products:</p>
+			<ul>
+				{% for products in order_object.cart.products.all %}
+				<li>{{products.title}} , {{products.price}}$</li>
+				{% endfor %}
+			</ul>
+		<p>Shipping address : {{ order_object.shipping_address.get_address }}</p>
+		<p>Billing address : {{order_object.billing_address.get_address}}</p>
+		<p>Cart Total: {{ order_object.cart.total}} </p>
+		<p>Shipping total: {{ order_object.shipping_total}} </p>
+		<p>Order Total: {{ order_object.total}} </p>
+		<form class="form" method="POST" action="">{% csrf_token %}
+			<button type="submit" class="btn btn-success">Checkout</button>
+		</form>
+
+	{% endif %}
+
+{% endif %}
+
+
+{% endblock %}

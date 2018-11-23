@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>CART</h1>
+
+{% if cart.products.exists %}
+<table class="table cart-table">
+	  <thead>
+	    <tr>
+	      <th scope="col">#</th>
+	      <th scope="col">Product Name</th>
+	      <th scope="col">Product Price</th>
+	      <th scope="col">Total = $</b><span class="cart-total">{{cart.total}}</span></th>
+	    </tr>
+	  </thead>
+
+<tbody class="cart-body">
+
+{% for product in cart.products.all %}
+	    <tr class="cart-product" id="{{product.id}}">
+		      <th scope="row">{{forloop.counter}}</th>
+		      <td><a href="{{product.get_url}}">{{product.title}}</a></td>
+		      <td>{{product.price}}</td>
+		      <div class="cart-item-remove-form">
+			      <td>  
+			     	{% include "carts/snippets/remove-cart.html" with product_id=product.id %}
+			  	 </td>
+		  	</div>
+	    </tr>
+{% endfor %}
+
+</tbody>
+</table>
+<table class="update-table">
+	<tr>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td><a class="btn btn-success" href="{% url 'cart:checkout' %}">Checkout</a></td>
+	</tr>
+</table>
+{%else%}
+
+	<p class="lead">Cart is Empty!</p>
+
+{%endif%}
+
+{% endblock %}
